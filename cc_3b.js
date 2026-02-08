@@ -20,14 +20,14 @@ inventory[2].stock += 200;
 console.log("oranges restocked to:", inventory[2].stock);
 
 let orders = [
-    {
-    orderId: 1001,
+    {orderId: 1001,
     Items: [
         {SKU: 101, quantity: 10},
         {SKU: 102, quantity: 5}
     ]},
     
-    {orderId: 1002, Items: [
+    {orderId: 1002, 
+    Items: [
         {SKU: 103, quantity: 20},
         {SKU: 104, quantity: 15}
     ]}
