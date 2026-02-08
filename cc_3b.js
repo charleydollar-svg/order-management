@@ -9,13 +9,13 @@ inventory.forEach(item => {
     console.log(`SKU: ${item.SKU}, Name: ${item.name}, Price: $${item.price.toFixed(2)}, Stock: ${item.stock}`);
 })
 
-inventory.push({SKU: 105, name: "pear", price: `$2.00`, stock: 600});
+inventory.push({SKU: 105, name: "pear", price: 2.00, stock: 600});
 
 let removedItem = inventory.pop();
 console.log("Removed item:", removedItem);
 
-inventory[1].price = `$1.00`;
-console.log("bananas on sale, 20% off:", inventory[1].price);
+inventory[1].price = 1.00;
+console.log("bananas on sale, 20% off:", "$" + inventory[1].price.toFixed(2));
 inventory[2].stock += 200;
 console.log("oranges restocked to:", inventory[2].stock);
 
@@ -42,24 +42,25 @@ function processOrder(order) {
             return `order ${order.orderId} failed: SKU ${item.SKU} not found`;
         }
 
-        if (inventoryItem.stock > item.quantity) {
-            inventoryItem.stock -= item.quantity;
-            orderTotal += inventoryItem.price * item.quantity;
-        } else {
+        if (inventoryItem.stock < item.quantity) {
             return `order ${order.orderId} failed: insufficient stock for SKU ${item.SKU}`;
         }
-    }
+    } //validate stock first
 
     for (let item of order.Items) {
         let inventoryItem = inventory.find(i => i.SKU === item.SKU);
-
         inventoryItem.stock -= item.quantity;
-        orderTotal += inventoryItem.price * item.quantity;
-    }
+
+        let discountedprice = 
+        inventoryItem.price * (1 - inventory.discountRate);
+
+        orderTotal += discountedprice * item.quantity;
+    } //process order
 
     return `order ${order.orderId} processed successfully. Total: $${orderTotal.toFixed(2)}`;
 }
 orders.forEach(order => {
     let result = processOrder(order);
     console.log(result);
-})
+}); //process orders
+
