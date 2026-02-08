@@ -55,12 +55,29 @@ function processOrder(order) {
         inventoryItem.price * (1 - inventory.discountRate);
 
         orderTotal += discountedprice * item.quantity;
-    } //process order
+    } //process the order
 
     return `order ${order.orderId} processed successfully. Total: $${orderTotal.toFixed(2)}`;
 }
 orders.forEach(order => {
     let result = processOrder(order);
     console.log(result);
-}); //process orders
+}); //process all orders
 
+//total potential revenue
+let totalRevenueValue = inventory.reduce((total, item) => {
+    return total + (item.price * (item.stock));
+}, 0);
+console.log("Total potential revenue:", "$" + totalRevenueValue.toFixed(2));
+
+//identify low stock items
+let lowStockItems = inventory.filter(item => item.stock < 300).map(item => item.name);
+
+console.log("Low stock items:", lowStockItems);
+
+
+//generate price list
+let priceList = inventory.map(item => {
+    return `${item.name}: $${item.price.toFixed(2)}`;
+});
+console.log("Price list:", priceList);
